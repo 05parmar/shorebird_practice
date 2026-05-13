@@ -30,11 +30,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _displayText = 'Hello World';
 
-  void _incrementCounter() {
+  void _changeText() {
     setState(() {
-      _counter++;
+      _displayText = 'change made';
     });
   }
 
@@ -47,12 +47,22 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         child: Center(
-          child: Text(
-            'Hello World',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                _displayText,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: _changeText,
+                child: const Text('change'),
+              ),
+            ],
           ),
         ),
       ),
