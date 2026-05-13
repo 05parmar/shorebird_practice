@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(width: 16),
               ElevatedButton(
                 onPressed: _changeText,
-                child: const Text('change'),
+                child: const Text('change text'),
               ),
             ],
           ),

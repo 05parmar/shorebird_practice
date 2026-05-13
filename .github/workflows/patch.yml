@@ -21,6 +21,17 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      # SPEED BOOST: This remembers your packages and Flutter SDK
+      - name: ⚡ Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ${{ runner.tool_cache }}/flutter
+          key: ${{ runner.os }}-pub-cache-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-cache-
+
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
