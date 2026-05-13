@@ -32,7 +32,7 @@ jobs:
           cache: true
 
       - name: 📦 Shorebird Patch Android
-        run: shorebird patch android
+        run: shorebird patch android --allow-asset-diffs
         env:
           # This token is required for CI/CD to authenticate with Shorebird
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
