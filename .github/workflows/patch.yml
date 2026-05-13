@@ -32,8 +32,7 @@ jobs:
           cache: true
 
       - name: 📦 Shorebird Patch Android
-        # --force prevents the command from waiting for user input
-        run: shorebird patch android --force
+        run: shorebird patch android
         env:
           # This token is required for CI/CD to authenticate with Shorebird
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
