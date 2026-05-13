@@ -34,7 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _changeText() {
     setState(() {
-      _displayText = 'change made';
+      _displayText =
+          _displayText == 'Hello World' ? 'change made' : 'Hello World';
     });
   }
 
