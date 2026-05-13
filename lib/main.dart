@@ -45,7 +45,17 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Container(child: Text('Hello World')),
+      body: Container(
+        child: Center(
+          child: Text(
+            'Hello World',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
