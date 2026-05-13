@@ -34,8 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _changeText() {
     setState(() {
-      _displayText =
-          _displayText == 'Hello World' ? 'change made' : 'Hello World';
+      _displayText = _displayText == 'Hello World'
+          ? 'change made'
+          : 'Hello World';
     });
   }
 
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 _displayText,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: Colors.blue,
                 ),
               ),
               const SizedBox(width: 16),
