@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Task {
+class TaskModel {
   final String id;
-  final String title;
-  final String time;
-  final Color color;
-  final String? icon;
+  String title;
+  DateTime time;
+  IconData icon;
+  Color color;
+  bool isCompleted;
 
-  Task({
+  TaskModel({
     required this.id,
     required this.title,
     required this.time,
+    required this.icon,
     required this.color,
-    this.icon,
+    this.isCompleted = false,
   });
 }

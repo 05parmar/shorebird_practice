@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
-import 'theme/app_colors.dart';
+import 'package:demo/screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        fontFamily: 'Helvetica',
-        scaffoldBackgroundColor: AppColors.darkBackground,
+        fontFamily: 'Helvetica', // Assuming standard font
+        scaffoldBackgroundColor: const Color(0xFF161616),
       ),
       home: const SplashScreen(),
     );
