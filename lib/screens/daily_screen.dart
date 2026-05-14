@@ -3,6 +3,8 @@ import '../theme/app_colors.dart';
 import '../models/task_model.dart';
 import '../widgets/task_card.dart';
 import '../widgets/task_dialog.dart';
+import '../widgets/add_task_sheet.dart';
+import '../services/task_service.dart';
 
 class DailyScreen extends StatelessWidget {
   final VoidCallback onNext;
@@ -11,14 +13,6 @@ class DailyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Task> tasks = [
-      Task(title: 'Call Elon', time: '11:00 Mo (Jan 30)', color: AppColors.taskLightGreen),
-      Task(title: 'Meet Irchick', time: '16:00-17:00 Mo (Jan 30)', color: AppColors.taskDarkGreen, icon: '🪴'),
-      Task(title: 'Finish dribbble shot', time: '20:00 Mo (Jan 30)', color: AppColors.taskYellow),
-      Task(title: 'Meet Uriyovich', time: '21:00 Mo (Jan 30)', color: AppColors.taskDarkGreen, icon: '☕'),
-      Task(title: 'Post to sharovary', time: '22:00 Mo (Jan 30)', color: AppColors.taskYellow),
-    ];
-
     return Scaffold(
       backgroundColor: AppColors.primaryTeal,
       body: SafeArea(
@@ -31,9 +25,9 @@ class DailyScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Text(
+                      const Text(
                         'Today ',
                         style: TextStyle(
                           fontSize: 24,
@@ -41,7 +35,7 @@ class DailyScreen extends StatelessWidget {
                           color: AppColors.yellowAccent,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'Mo - Jan 30 ',
                         style: TextStyle(
                           fontSize: 24,
@@ -49,7 +43,17 @@ class DailyScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      Icon(Icons.add, color: AppColors.lightGreenAccent, size: 28),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => const AddTaskSheet(),
+                          );
+                        },
+                        child: const Icon(Icons.add, color: AppColors.lightGreenAccent, size: 28),
+                      ),
                     ],
                   ),
                   GestureDetector(
@@ -74,21 +78,28 @@ class DailyScreen extends StatelessWidget {
             
             // Task List
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                itemCount: tasks.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (index == 2) {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const TaskDialog(),
-                        );
-                      }
+              child: ValueListenableBuilder<List<Task>>(
+                valueListenable: TaskService().tasksNotifier,
+                builder: (context, tasks, child) {
+                  if (tasks.isEmpty) {
+                    return const Center(child: Text("No tasks for today", style: TextStyle(color: Colors.white)));
+                  }
+                  return ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                    itemCount: tasks.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 16),
+                    itemBuilder: (context, index) {
+                      final task = tasks[index];
+                      return GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => TaskDialog(task: task),
+                          );
+                        },
+                        child: TaskCard(task: task),
+                      );
                     },
-                    child: TaskCard(task: tasks[index]),
                   );
                 },
               ),

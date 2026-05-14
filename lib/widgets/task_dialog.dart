@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import '../models/task_model.dart';
+import '../services/task_service.dart';
 
 class TaskDialog extends StatelessWidget {
-  const TaskDialog({super.key});
+  final Task task;
+
+  const TaskDialog({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +16,7 @@ class TaskDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.taskDarkGreen,
+          color: task.color,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.black, width: 2),
           boxShadow: const [
@@ -30,22 +34,22 @@ class TaskDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Meet Uriyovich',
-                        style: TextStyle(
+                        task.title,
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: AppColors.darkAccent,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
-                        '21:00 Mo (Jan 30)',
-                        style: TextStyle(
+                        task.time,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: AppColors.darkAccent,
                           fontWeight: FontWeight.w500,
@@ -54,18 +58,19 @@ class TaskDialog extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black, width: 2),
+                if (task.icon != null)
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black, width: 2),
+                    ),
+                    child: Center(
+                      child: Text(task.icon!, style: const TextStyle(fontSize: 32)),
+                    ),
                   ),
-                  child: const Center(
-                    child: Text('☕', style: TextStyle(fontSize: 32)),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 32),
@@ -73,10 +78,13 @@ class TaskDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      TaskService().removeTask(task.id);
+                      Navigator.pop(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: AppColors.darkAccent,
+                      foregroundColor: Colors.redAccent,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -85,7 +93,7 @@ class TaskDialog extends StatelessWidget {
                       elevation: 0,
                     ),
                     child: const Text(
-                      'Edit',
+                      'Delete',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -93,7 +101,10 @@ class TaskDialog extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      TaskService().removeTask(task.id);
+                      Navigator.pop(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.buttonYellow,
                       foregroundColor: AppColors.darkAccent,
