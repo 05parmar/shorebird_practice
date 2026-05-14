@@ -3,6 +3,7 @@ import 'package:demo/models/task_model.dart';
 import 'package:demo/theme/app_colors.dart';
 import 'package:demo/widgets/task_card.dart';
 import 'package:demo/screens/schedule_screen.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime? currentBackPressTime;
+
   final List<TaskModel> _tasks = [
     TaskModel(
       id: '1',
@@ -156,8 +159,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primaryGreen,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        DateTime now = DateTime.now();
+        if (currentBackPressTime == null || 
+            now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+          currentBackPressTime = now;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Press back again to exit'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.primaryGreen,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
